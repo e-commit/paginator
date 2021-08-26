@@ -540,14 +540,14 @@ class AbtractPaginatorTest extends TestCase
     protected function createPaginator(array $options): AbstractPaginator
     {
         return new class($options) extends AbstractPaginator {
-            protected function buildCountResults(array $options): int
+            protected function buildCountResults(): int
             {
-                return \count($options['iterator']);
+                return \count($this->getOption('iterator'));
             }
 
-            protected function buildIterator(array $options): \Traversable
+            protected function buildIterator(): \Traversable
             {
-                return $options['iterator'];
+                return $this->getOption('iterator');
             }
 
             protected function configureOptions(OptionsResolver $resolver): void

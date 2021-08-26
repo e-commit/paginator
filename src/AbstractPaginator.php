@@ -56,20 +56,20 @@ abstract class AbstractPaginator implements PaginatorInterface
         $this->configureOptions($resolver);
         $this->options = $resolver->resolve($options);
 
-        $this->buildPagination($this->options);
-        $this->iterator = $this->buildIterator($this->options);
+        $this->buildPagination();
+        $this->iterator = $this->buildIterator();
         $this->iteratorIsInitialized = true;
 
         return $this;
     }
 
-    abstract protected function buildCountResults(array $options): int;
+    abstract protected function buildCountResults(): int;
 
-    abstract protected function buildIterator(array $options): \Traversable;
+    abstract protected function buildIterator(): \Traversable;
 
-    private function buildPagination(array $options): void
+    private function buildPagination(): void
     {
-        $this->countResults = $this->buildCountResults($options);
+        $this->countResults = $this->buildCountResults();
 
         $lastPage = 1;
         if ($this->countResults > 0) {

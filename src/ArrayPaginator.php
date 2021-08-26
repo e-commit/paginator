@@ -18,26 +18,26 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArrayPaginator extends AbstractPaginator
 {
-    protected function buildCountResults(array $options): int
+    protected function buildCountResults(): int
     {
-        return (null === $options['count_results']) ? \count($options['data']) : $options['count_results'];
+        return (null === $this->getOption('count_results')) ? \count($this->getOption('data')) : $this->getOption('count_results');
     }
 
-    protected function buildIterator(array $options): \Traversable
+    protected function buildIterator(): \Traversable
     {
-        if (null === $options['count_results']) {
+        if (null === $this->getOption('count_results')) {
             $offset = 0;
             $limit = 0;
             if ($this->count() > 0) {
                 $offset = ($this->getPage() - 1) * $this->getMaxPerPage();
                 $limit = $this->getMaxPerPage();
             }
-            $partialData = \array_slice($options['data'], $offset, $limit);
+            $partialData = \array_slice($this->getOption('data'), $offset, $limit);
 
             return new \ArrayIterator($partialData);
         }
 
-        return new \ArrayIterator($options['data']);
+        return new \ArrayIterator($this->getOption('data'));
     }
 
     protected function configureOptions(OptionsResolver $resolver): void
