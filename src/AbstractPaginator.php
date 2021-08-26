@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Ecommit\Paginator;
 
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractPaginator implements PaginatorInterface
 {
-    private $page;
-    private $maxPerPage;
+    private $options;
 
     private $iterator;
     private $countResults;
@@ -35,21 +35,29 @@ abstract class AbstractPaginator implements PaginatorInterface
             'page' => 1,
             'max_per_page' => 100,
         ]);
-        //Page option: Not use "setAllowedTypes" (because user input. Value checked by setPage method)
+        $resolver->setNormalizer('page', function (Options $options, $page): int {
+            if (null === $page || !is_scalar($page) || !preg_match('/^\d+$/', (string) $page)) {
+                $page = 1;
+                $this->pageExists = false;
+            }
+            $page = (int) $page;
+
+            if ($page <= 0) {
+                $page = 1;
+                $this->pageExists = false;
+            }
+
+            return $page;
+        });
         $resolver->setAllowedTypes('max_per_page', 'int');
         $resolver->setAllowedValues('max_per_page', function ($value) {
             return $value > 0;
         });
         $this->configureOptions($resolver);
-        $options = $resolver->resolve($options);
+        $this->options = $resolver->resolve($options);
 
-        $this->setPage($options['page']);
-        $this->setMaxPerPage($options['max_per_page']);
-        unset($options['page']);
-        unset($options['max_per_page']);
-
-        $this->buildPagination($options);
-        $this->iterator = $this->buildIterator($options);
+        $this->buildPagination($this->options);
+        $this->iterator = $this->buildIterator($this->options);
         $this->iteratorIsInitialized = true;
 
         return $this;
@@ -69,7 +77,7 @@ abstract class AbstractPaginator implements PaginatorInterface
         }
 
         if ($this->getPage() > $lastPage) {
-            $this->page = $lastPage;
+            $this->options['page'] = $lastPage;
             $this->pageExists = false;
         }
 
@@ -137,7 +145,7 @@ abstract class AbstractPaginator implements PaginatorInterface
 
     public function getPage(): int
     {
-        return $this->page;
+        return $this->options['page'];
     }
 
     public function pageExists(): bool
@@ -177,38 +185,9 @@ abstract class AbstractPaginator implements PaginatorInterface
         return $this->getPage() === $this->getLastPage();
     }
 
-    private function setPage($page): self
-    {
-        if (null === $page || !is_scalar($page) || !preg_match('/^\d+$/', (string) $page)) {
-            $page = 1;
-            $this->pageExists = false;
-        }
-        $page = (int) $page;
-
-        if ($page <= 0) {
-            $page = 1;
-            $this->pageExists = false;
-        }
-
-        $this->page = $page;
-
-        return $this;
-    }
-
     public function getMaxPerPage(): int
     {
-        return $this->maxPerPage;
-    }
-
-    private function setMaxPerPage(int $maxPerPage): self
-    {
-        $this->maxPerPage = $maxPerPage;
-
-        if ($this->maxPerPage <= 0) {
-            throw new \Exception('Max results value must be positive');
-        }
-
-        return $this;
+        return $this->options['max_per_page'];
     }
 
     public function getIterator(): \Traversable
