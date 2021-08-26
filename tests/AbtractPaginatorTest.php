@@ -81,6 +81,40 @@ class AbtractPaginatorTest extends TestCase
         $this->assertSame(100, $paginator->getMaxPerPage());
     }
 
+    public function testGetOptions(): void
+    {
+        $options = $this->getDefaultOptions();
+        $paginator = $this->createPaginator($options);
+
+        $this->assertSame($options, $paginator->getOptions());
+    }
+
+    public function testGetOptionsReadOnly(): void
+    {
+        $paginator = $this->createPaginator($this->getDefaultOptions());
+        $options = $paginator->getOptions();
+        $options['page'] = 8;
+
+        $this->assertSame(1, $paginator->getOptions()['page']);
+    }
+
+    public function testGetOption(): void
+    {
+        $paginator = $this->createPaginator($this->getDefaultOptions());
+
+        $this->assertSame(1, $paginator->getOption('page'));
+    }
+
+    public function testGetOptionNotFound(): void
+    {
+        $paginator = $this->createPaginator($this->getDefaultOptions());
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Option "bad" not found');
+
+        $paginator->getOption('bad');
+    }
+
     public function testCount(): void
     {
         $paginator = $this->createPaginator($this->getDefaultOptions());

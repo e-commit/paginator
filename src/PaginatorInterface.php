@@ -15,6 +15,10 @@ namespace Ecommit\Paginator;
 
 interface PaginatorInterface extends \IteratorAggregate, \Countable
 {
+    public function getOptions(): array;
+
+    public function getOption(string $option);
+
     public function haveToPaginate(): bool;
 
     public function getFirstIndice(): int;

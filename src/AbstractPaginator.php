@@ -89,6 +89,20 @@ abstract class AbstractPaginator implements PaginatorInterface
     {
     }
 
+    final public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    final public function getOption(string $option)
+    {
+        if (\array_key_exists($option, $this->options)) {
+            return $this->options[$option];
+        }
+
+        throw new \Exception(sprintf('Option "%s" not found', $option));
+    }
+
     public function count(): int
     {
         $this->testIfPaginationIsInitialized();
@@ -145,7 +159,7 @@ abstract class AbstractPaginator implements PaginatorInterface
 
     public function getPage(): int
     {
-        return $this->options['page'];
+        return $this->getOption('page');
     }
 
     public function pageExists(): bool
@@ -187,7 +201,7 @@ abstract class AbstractPaginator implements PaginatorInterface
 
     public function getMaxPerPage(): int
     {
-        return $this->options['max_per_page'];
+        return $this->getOption('max_per_page');
     }
 
     public function getIterator(): \Traversable
