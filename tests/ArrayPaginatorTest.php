@@ -44,23 +44,23 @@ class ArrayPaginatorTest extends TestCase
         $this->createPaginator($options);
     }
 
-    public function testBadTypeCountResultsOption(): void
+    public function testBadTypeCountOption(): void
     {
         $this->expectException(InvalidOptionsException::class);
-        $this->expectExceptionMessage('"count_results"');
+        $this->expectExceptionMessage('"count"');
 
         $options = $this->getDefaultOptions();
-        $options['count_results'] = 'string';
+        $options['count'] = 'string';
         $this->createPaginator($options);
     }
 
-    public function testBadNumberCountResultsOption(): void
+    public function testBadNumberCountOption(): void
     {
         $this->expectException(InvalidOptionsException::class);
-        $this->expectExceptionMessage('"count_results"');
+        $this->expectExceptionMessage('"count"');
 
         $options = $this->getDefaultOptions();
-        $options['count_results'] = -5;
+        $options['count'] = -5;
         $this->createPaginator($options);
     }
 
@@ -125,20 +125,20 @@ class ArrayPaginatorTest extends TestCase
     }
 
     /**
-     * @dataProvider getTestCountWithCountResultsProvider
+     * @dataProvider getTestCountWithCountProvider
      */
-    public function testWithCountResults($page, int $maxPerPage, $data, int $countResults, int $expectedCountPages, \ArrayIterator $expectedIterator): void
+    public function testWithCount($page, int $maxPerPage, $data, int $count, int $expectedCountPages, \ArrayIterator $expectedIterator): void
     {
         $options = $this->getDefaultOptions($page, $maxPerPage, $data);
-        $options['count_results'] = $countResults;
+        $options['count'] = $count;
         $paginator = $this->createPaginator($options);
 
-        $this->assertSame($countResults, \count($paginator));
+        $this->assertSame($count, \count($paginator));
         $this->assertSame($expectedCountPages, $paginator->getLastPage());
         $this->assertEquals($expectedIterator, $paginator->getIterator());
     }
 
-    public function getTestCountWithCountResultsProvider(): array
+    public function getTestCountWithCountProvider(): array
     {
         return [
             [1, 5, $this->getDefaultArray(), 202, 41, new \ArrayIterator(range(0, 51))],

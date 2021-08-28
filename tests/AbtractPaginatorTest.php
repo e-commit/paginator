@@ -540,7 +540,7 @@ class AbtractPaginatorTest extends TestCase
     protected function createPaginator(array $options): AbstractPaginator
     {
         return new class($options) extends AbstractPaginator {
-            protected function buildCountResults(): int
+            protected function buildCount(): int
             {
                 return \count($this->getOption('iterator'));
             }
@@ -561,7 +561,7 @@ class AbtractPaginatorTest extends TestCase
     {
         return $this->getMockBuilder(AbstractPaginator::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['buildCountResults', 'buildIterator'])
+            ->onlyMethods(['buildCount', 'buildIterator'])
             ->getMock();
     }
 }

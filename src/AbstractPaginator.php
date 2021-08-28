@@ -21,7 +21,7 @@ abstract class AbstractPaginator implements PaginatorInterface
     private $options;
 
     private $iterator;
-    private $countResults;
+    private $count;
     private $lastPage;
 
     private $pageExists = true;
@@ -63,17 +63,17 @@ abstract class AbstractPaginator implements PaginatorInterface
         return $this;
     }
 
-    abstract protected function buildCountResults(): int;
+    abstract protected function buildCount(): int;
 
     abstract protected function buildIterator(): \Traversable;
 
     private function buildPagination(): void
     {
-        $this->countResults = $this->buildCountResults();
+        $this->count = $this->buildCount();
 
         $lastPage = 1;
-        if ($this->countResults > 0) {
-            $lastPage = (int) ceil($this->countResults / $this->getMaxPerPage());
+        if ($this->count > 0) {
+            $lastPage = (int) ceil($this->count / $this->getMaxPerPage());
         }
 
         if ($this->getPage() > $lastPage) {
@@ -107,7 +107,7 @@ abstract class AbstractPaginator implements PaginatorInterface
     {
         $this->testIfPaginationIsInitialized();
 
-        return $this->countResults;
+        return $this->count;
     }
 
     public function haveToPaginate(): bool

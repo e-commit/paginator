@@ -18,14 +18,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArrayPaginator extends AbstractPaginator
 {
-    protected function buildCountResults(): int
+    protected function buildCount(): int
     {
-        return (null === $this->getOption('count_results')) ? \count($this->getOption('data')) : $this->getOption('count_results');
+        return (null === $this->getOption('count')) ? \count($this->getOption('data')) : $this->getOption('count');
     }
 
     protected function buildIterator(): \Traversable
     {
-        if (null === $this->getOption('count_results')) {
+        if (null === $this->getOption('count')) {
             $offset = 0;
             $limit = 0;
             if ($this->count() > 0) {
@@ -52,9 +52,9 @@ class ArrayPaginator extends AbstractPaginator
             return $value;
         });
 
-        $resolver->setDefault('count_results', null);
-        $resolver->setAllowedTypes('count_results', ['int', 'null']);
-        $resolver->setAllowedValues('count_results', function ($value) {
+        $resolver->setDefault('count', null);
+        $resolver->setAllowedTypes('count', ['int', 'null']);
+        $resolver->setAllowedValues('count', function ($value) {
             return null === $value || $value >= 0;
         });
     }
