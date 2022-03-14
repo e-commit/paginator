@@ -72,7 +72,7 @@ class ArrayPaginatorTest extends TestCase
         $options = $this->getDefaultOptions($page, $maxPerPage, $data);
         $paginator = $this->createPaginator($options);
 
-        $this->assertSame($expectedValue, \count($paginator));
+        $this->assertCount($expectedValue, $paginator);
     }
 
     public function getTestCountProvider(): array
@@ -81,16 +81,16 @@ class ArrayPaginatorTest extends TestCase
             [1, 5, $this->getDefaultArray(), 52],
             [3, 5, $this->getDefaultArray(), 52],
             [11, 5, $this->getDefaultArray(), 52],
-            [1, 5, [], 0], //No data
-            ['page', 5, $this->getDefaultArray(), 52], //Bad page
-            [1000, 5, $this->getDefaultArray(), 52], //Page too high
+            [1, 5, [], 0], // No data
+            ['page', 5, $this->getDefaultArray(), 52], // Bad page
+            [1000, 5, $this->getDefaultArray(), 52], // Page too high
 
             [1, 5, $this->getDefaultIterator(), 52],
             [3, 5, $this->getDefaultIterator(), 52],
             [11, 5, $this->getDefaultIterator(), 52],
-            [1, 5, $this->createIterator([]), 0], //No data
-            ['page', 5, $this->getDefaultIterator(), 52], //Bad page
-            [1000, 5, $this->getDefaultIterator(), 52], //Page too high
+            [1, 5, $this->createIterator([]), 0], // No data
+            ['page', 5, $this->getDefaultIterator(), 52], // Bad page
+            [1000, 5, $this->getDefaultIterator(), 52], // Page too high
         ];
     }
 
@@ -111,16 +111,16 @@ class ArrayPaginatorTest extends TestCase
             [1, 5, $this->getDefaultArray(), new \ArrayIterator([0, 1, 2, 3, 4])],
             [3, 5, $this->getDefaultArray(), new \ArrayIterator([10, 11, 12, 13, 14])],
             [11, 5, $this->getDefaultArray(), new \ArrayIterator([50, 51])],
-            [1, 5, [], new \ArrayIterator()], //No data
-            ['page', 5, $this->getDefaultArray(), new \ArrayIterator([0, 1, 2, 3, 4])], //Bad page
-            [1000, 5, $this->getDefaultArray(), new \ArrayIterator([50, 51])], //Page too high
+            [1, 5, [], new \ArrayIterator()], // No data
+            ['page', 5, $this->getDefaultArray(), new \ArrayIterator([0, 1, 2, 3, 4])], // Bad page
+            [1000, 5, $this->getDefaultArray(), new \ArrayIterator([50, 51])], // Page too high
 
             [1, 5, $this->getDefaultIterator(), new \ArrayIterator([0, 1, 2, 3, 4])],
             [3, 5, $this->getDefaultIterator(), new \ArrayIterator([10, 11, 12, 13, 14])],
             [11, 5, $this->getDefaultIterator(), new \ArrayIterator([50, 51])],
-            [1, 5, $this->createIterator([]), new \ArrayIterator()], //No data
-            ['page', 5, $this->getDefaultIterator(), new \ArrayIterator([0, 1, 2, 3, 4])], //Bad page
-            [1000, 5, $this->getDefaultIterator(), new \ArrayIterator([50, 51])], //Page too high
+            [1, 5, $this->createIterator([]), new \ArrayIterator()], // No data
+            ['page', 5, $this->getDefaultIterator(), new \ArrayIterator([0, 1, 2, 3, 4])], // Bad page
+            [1000, 5, $this->getDefaultIterator(), new \ArrayIterator([50, 51])], // Page too high
         ];
     }
 
@@ -133,7 +133,7 @@ class ArrayPaginatorTest extends TestCase
         $options['count'] = $count;
         $paginator = $this->createPaginator($options);
 
-        $this->assertSame($count, \count($paginator));
+        $this->assertCount($count, $paginator);
         $this->assertSame($expectedCountPages, $paginator->getLastPage());
         $this->assertEquals($expectedIterator, $paginator->getIterator());
     }
@@ -144,16 +144,16 @@ class ArrayPaginatorTest extends TestCase
             [1, 5, $this->getDefaultArray(), 202, 41, new \ArrayIterator(range(0, 51))],
             [3, 5, $this->getDefaultArray(), 202, 41, new \ArrayIterator(range(0, 51))],
             [11, 5, $this->getDefaultArray(), 202, 41, new \ArrayIterator(range(0, 51))],
-            [1, 5, [], 0, 1, new \ArrayIterator()], //No data
-            ['page', 5, $this->getDefaultArray(), 202, 41, new \ArrayIterator(range(0, 51))], //Bad page
-            [1000, 5, $this->getDefaultArray(), 202, 41, new \ArrayIterator(range(0, 51))], //Page too high
+            [1, 5, [], 0, 1, new \ArrayIterator()], // No data
+            ['page', 5, $this->getDefaultArray(), 202, 41, new \ArrayIterator(range(0, 51))], // Bad page
+            [1000, 5, $this->getDefaultArray(), 202, 41, new \ArrayIterator(range(0, 51))], // Page too high
 
             [1, 5, $this->getDefaultIterator(), 202, 41, new \ArrayIterator(range(0, 51))],
             [3, 5, $this->getDefaultIterator(), 202, 41, new \ArrayIterator(range(0, 51))],
             [11, 5, $this->getDefaultIterator(), 202, 41, new \ArrayIterator(range(0, 51))],
-            [1, 5, $this->createIterator([]), 0, 1, new \ArrayIterator()], //No data
-            ['page', 5, $this->getDefaultIterator(), 202, 41, new \ArrayIterator(range(0, 51))], //Bad page
-            [1000, 5, $this->getDefaultIterator(), 202, 41, new \ArrayIterator(range(0, 51))], //Page too high
+            [1, 5, $this->createIterator([]), 0, 1, new \ArrayIterator()], // No data
+            ['page', 5, $this->getDefaultIterator(), 202, 41, new \ArrayIterator(range(0, 51))], // Bad page
+            [1000, 5, $this->getDefaultIterator(), 202, 41, new \ArrayIterator(range(0, 51))], // Page too high
         ];
     }
 

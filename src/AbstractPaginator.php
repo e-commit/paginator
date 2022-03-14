@@ -36,7 +36,7 @@ abstract class AbstractPaginator implements PaginatorInterface
             'max_per_page' => 100,
         ]);
         $resolver->setNormalizer('page', function (Options $options, $page): int {
-            if (null === $page || !is_scalar($page) || !preg_match('/^\d+$/', (string) $page)) {
+            if (null === $page || !\is_scalar($page) || !preg_match('/^\d+$/', (string) $page)) {
                 $page = 1;
                 $this->pageExists = false;
             }
