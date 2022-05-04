@@ -54,8 +54,6 @@ class ArrayPaginator extends AbstractPaginator
 
         $resolver->setDefault('count', null);
         $resolver->setAllowedTypes('count', ['int', 'null']);
-        $resolver->setAllowedValues('count', function (?int $value) {
-            return null === $value || $value >= 0;
-        });
+        $resolver->setAllowedValues('count', fn (?int $value) => null === $value || $value >= 0);
     }
 }
