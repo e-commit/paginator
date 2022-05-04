@@ -18,15 +18,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractPaginator implements PaginatorInterface
 {
-    private $options;
+    private array $options;
 
-    private $iterator;
-    private $count;
-    private $lastPage;
+    private \Traversable $iterator;
+    private int $count;
+    private int $lastPage;
 
-    private $pageExists = true;
-    private $paginationIsInitialized = false;
-    private $iteratorIsInitialized = false;
+    private bool $pageExists = true;
+    private bool $paginationIsInitialized = false;
+    private bool $iteratorIsInitialized = false;
 
     final public function __construct(array $options = [])
     {
@@ -35,7 +35,7 @@ abstract class AbstractPaginator implements PaginatorInterface
             'page' => 1,
             'max_per_page' => 100,
         ]);
-        $resolver->setNormalizer('page', function (Options $options, $page): int {
+        $resolver->setNormalizer('page', function (Options $options, mixed $page): int {
             if (null === $page || !\is_scalar($page) || !preg_match('/^\d+$/', (string) $page)) {
                 $page = 1;
                 $this->pageExists = false;
@@ -50,7 +50,7 @@ abstract class AbstractPaginator implements PaginatorInterface
             return $page;
         });
         $resolver->setAllowedTypes('max_per_page', 'int');
-        $resolver->setAllowedValues('max_per_page', function ($value) {
+        $resolver->setAllowedValues('max_per_page', function (int $value) {
             return $value > 0;
         });
         $this->configureOptions($resolver);
@@ -94,7 +94,7 @@ abstract class AbstractPaginator implements PaginatorInterface
         return $this->options;
     }
 
-    final public function getOption(string $option)
+    final public function getOption(string $option): mixed
     {
         if (\array_key_exists($option, $this->options)) {
             return $this->options[$option];

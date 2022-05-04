@@ -17,7 +17,7 @@ interface PaginatorInterface extends \IteratorAggregate, \Countable
 {
     public function getOptions(): array;
 
-    public function getOption(string $option);
+    public function getOption(string $option): mixed;
 
     public function haveToPaginate(): bool;
 
