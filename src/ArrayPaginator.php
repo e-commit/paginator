@@ -16,6 +16,22 @@ namespace Ecommit\Paginator;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @phpstan-type PaginatorOptions array{
+ *      page?: mixed,
+ *      max_per_page?: int<1, max>,
+ *      data: array|\ArrayIterator<int|string, mixed>,
+ *      count?: int<0, max>|null
+ * }
+ * @phpstan-type PaginatorResolvedOptions array{
+ *      page: int<0, max>,
+ *      max_per_page: int<1, max>,
+ *      data: array,
+ *      count: int<0, max>|null
+ * }
+ *
+ * @template-extends AbstractPaginator<mixed, mixed, PaginatorOptions, PaginatorResolvedOptions>
+ */
 class ArrayPaginator extends AbstractPaginator
 {
     protected function buildCount(): int

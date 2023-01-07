@@ -18,11 +18,14 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
+/**
+ * @phpstan-import-type PaginatorOptions from ArrayPaginator
+ */
 class ArrayPaginatorTest extends TestCase
 {
     use BuildArrayIteratorTrait;
 
-    protected $defaultArray;
+    protected ?array $defaultArray = null;
 
     public function testMissingDataOption(): void
     {
@@ -31,7 +34,7 @@ class ArrayPaginatorTest extends TestCase
 
         $options = $this->getDefaultOptions();
         unset($options['data']);
-        $this->createPaginator($options);
+        $this->createPaginator($options); // @phpstan-ignore-line
     }
 
     public function testBadTypeDataOption(): void
@@ -41,7 +44,7 @@ class ArrayPaginatorTest extends TestCase
 
         $options = $this->getDefaultOptions();
         $options['data'] = 'string';
-        $this->createPaginator($options);
+        $this->createPaginator($options);  // @phpstan-ignore-line
     }
 
     public function testBadTypeCountOption(): void
@@ -51,7 +54,7 @@ class ArrayPaginatorTest extends TestCase
 
         $options = $this->getDefaultOptions();
         $options['count'] = 'string';
-        $this->createPaginator($options);
+        $this->createPaginator($options);  // @phpstan-ignore-line
     }
 
     public function testBadNumberCountOption(): void
@@ -61,13 +64,16 @@ class ArrayPaginatorTest extends TestCase
 
         $options = $this->getDefaultOptions();
         $options['count'] = -5;
-        $this->createPaginator($options);
+        $this->createPaginator($options); // @phpstan-ignore-line
     }
 
     /**
      * @dataProvider getTestCountProvider
+     *
+     * @param int<1, max>                             $maxPerPage
+     * @param \ArrayIterator<int|string, mixed>|array $data
      */
-    public function testCount($page, int $maxPerPage, $data, int $expectedValue): void
+    public function testCount(mixed $page, int $maxPerPage, \ArrayIterator|array $data, int $expectedValue): void
     {
         $options = $this->getDefaultOptions($page, $maxPerPage, $data);
         $paginator = $this->createPaginator($options);
@@ -96,8 +102,12 @@ class ArrayPaginatorTest extends TestCase
 
     /**
      * @dataProvider getTestGetIteratorProvider
+     *
+     * @param int<1, max>                             $maxPerPage
+     * @param \ArrayIterator<int|string, mixed>|array $data
+     * @param \ArrayIterator<int|string, mixed>       $expectedValue
      */
-    public function testGetIterator($page, int $maxPerPage, $data, \ArrayIterator $expectedValue): void
+    public function testGetIterator(mixed $page, int $maxPerPage, \ArrayIterator|array $data, \ArrayIterator $expectedValue): void
     {
         $options = $this->getDefaultOptions($page, $maxPerPage, $data);
         $paginator = $this->createPaginator($options);
@@ -126,8 +136,13 @@ class ArrayPaginatorTest extends TestCase
 
     /**
      * @dataProvider getTestCountWithCountProvider
+     *
+     * @param int<1, max>                             $maxPerPage
+     * @param \ArrayIterator<int|string, mixed>|array $data
+     * @param \ArrayIterator<int|string, mixed>       $expectedIterator
+     * @param int<0, max>                             $count
      */
-    public function testWithCount($page, int $maxPerPage, $data, int $count, int $expectedCountPages, \ArrayIterator $expectedIterator): void
+    public function testWithCount(mixed $page, int $maxPerPage, \ArrayIterator|array $data, int $count, int $expectedCountPages, \ArrayIterator $expectedIterator): void
     {
         $options = $this->getDefaultOptions($page, $maxPerPage, $data);
         $options['count'] = $count;
@@ -157,7 +172,13 @@ class ArrayPaginatorTest extends TestCase
         ];
     }
 
-    protected function getDefaultOptions($page = 1, $perPage = 5, $data = null): array
+    /**
+     * @param int<1, max>                             $perPage
+     * @param \ArrayIterator<int|string, mixed>|array $data
+     *
+     * @return PaginatorOptions
+     */
+    protected function getDefaultOptions(mixed $page = 1, int $perPage = 5, \ArrayIterator|array $data = null): array
     {
         if (null === $data) {
             $data = $this->getDefaultArray();
@@ -170,6 +191,11 @@ class ArrayPaginatorTest extends TestCase
         ];
     }
 
+    /**
+     * @param PaginatorOptions $options
+     *
+     * @return ArrayPaginator<mixed, mixed>
+     */
     protected function createPaginator(array $options): ArrayPaginator
     {
         return new ArrayPaginator($options);

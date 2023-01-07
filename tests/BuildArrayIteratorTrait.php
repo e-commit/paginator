@@ -15,13 +15,20 @@ namespace Ecommit\Paginator\Tests;
 
 trait BuildArrayIteratorTrait
 {
-    protected $defaultIterator;
+    /** @var \ArrayIterator<int|string, mixed>|null */
+    protected ?\ArrayIterator $defaultIterator = null;
 
+    /**
+     * @return \ArrayIterator<int|string, mixed>
+     */
     protected function createIterator(array $data): \ArrayIterator
     {
         return new \ArrayIterator($data);
     }
 
+    /**
+     * @return \ArrayIterator<int|string, mixed>
+     */
     protected function getDefaultIterator(): \ArrayIterator
     {
         if (null === $this->defaultIterator) {

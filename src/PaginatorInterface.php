@@ -13,10 +13,29 @@ declare(strict_types=1);
 
 namespace Ecommit\Paginator;
 
+/**
+ * @template TKey
+ *
+ * @template-covariant TValue
+ *
+ * @template TResolvedOptions of array<string, mixed>
+ *
+ * @template-extends \IteratorAggregate<TKey, TValue>
+ */
 interface PaginatorInterface extends \IteratorAggregate, \Countable
 {
+    /**
+     * @return TResolvedOptions
+     */
     public function getOptions(): array;
 
+    /**
+     * @template TResolvedOptionKey of key-of<TResolvedOptions>
+     *
+     * @param TResolvedOptionKey $option
+     *
+     * @return TResolvedOptions[TResolvedOptionKey]
+     */
     public function getOption(string $option): mixed;
 
     public function haveToPaginate(): bool;

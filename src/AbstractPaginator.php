@@ -16,11 +16,24 @@ namespace Ecommit\Paginator;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @template TKey
+ *
+ * @template-covariant TValue
+ *
+ * @template TOptions of array<string ,mixed>
+ * @template TResolvedOptions of array<string ,mixed>
+ *
+ * @template-implements PaginatorInterface<TKey, TValue, TResolvedOptions>
+ */
 abstract class AbstractPaginator implements PaginatorInterface
 {
+    /** @var TResolvedOptions */
     private array $options;
 
+    /** @var \Traversable<TKey, TValue> */
     private \Traversable $iterator;
+    /** @var int<0, max> */
     private int $count;
     private int $lastPage;
 
@@ -28,6 +41,9 @@ abstract class AbstractPaginator implements PaginatorInterface
     private bool $paginationIsInitialized = false;
     private bool $iteratorIsInitialized = false;
 
+    /**
+     * @param TOptions $options
+     */
     final public function __construct(array $options = [])
     {
         $resolver = new OptionsResolver();
@@ -61,8 +77,14 @@ abstract class AbstractPaginator implements PaginatorInterface
         return $this;
     }
 
+    /**
+     * @return int<0, max>
+     */
     abstract protected function buildCount(): int;
 
+    /**
+     * @return \Traversable<TKey, TValue>
+     */
     abstract protected function buildIterator(): \Traversable;
 
     private function buildPagination(): void
@@ -101,6 +123,9 @@ abstract class AbstractPaginator implements PaginatorInterface
         throw new \Exception(sprintf('Option "%s" not found', $option));
     }
 
+    /**
+     * @return int<0, max>
+     */
     public function count(): int
     {
         $this->testIfPaginationIsInitialized();
@@ -157,7 +182,7 @@ abstract class AbstractPaginator implements PaginatorInterface
 
     public function getPage(): int
     {
-        return $this->getOption('page');
+        return $this->getOption('page'); // @phpstan-ignore-line
     }
 
     public function pageExists(): bool
@@ -199,7 +224,7 @@ abstract class AbstractPaginator implements PaginatorInterface
 
     public function getMaxPerPage(): int
     {
-        return $this->getOption('max_per_page');
+        return $this->getOption('max_per_page'); // @phpstan-ignore-line
     }
 
     public function getIterator(): \Traversable

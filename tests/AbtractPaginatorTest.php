@@ -14,10 +14,13 @@ declare(strict_types=1);
 namespace Ecommit\Paginator\Tests;
 
 use Ecommit\Paginator\AbstractPaginator;
+use Ecommit\Paginator\Tests\Paginator\TestPaginator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @phpstan-import-type PaginatorOptions from TestPaginator
+ */
 class AbtractPaginatorTest extends TestCase
 {
     use BuildArrayIteratorTrait;
@@ -25,7 +28,7 @@ class AbtractPaginatorTest extends TestCase
     /**
      * @dataProvider getTestBadPageOptionProvider
      */
-    public function testBadPageOption($page, $expectedPage): void
+    public function testBadPageOption(mixed $page, int $expectedPage): void
     {
         $options = $this->getDefaultOptions();
         $options['page'] = $page;
@@ -60,7 +63,7 @@ class AbtractPaginatorTest extends TestCase
 
         $options = $this->getDefaultOptions();
         $options['max_per_page'] = 'string';
-        $this->createPaginator($options);
+        $this->createPaginator($options); // @phpstan-ignore-line
     }
 
     public function testBadNumberMaxPerPageOption(): void
@@ -112,7 +115,7 @@ class AbtractPaginatorTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Option "bad" not found');
 
-        $paginator->getOption('bad');
+        $paginator->getOption('bad'); // @phpstan-ignore-line
     }
 
     public function testCount(): void
@@ -173,8 +176,10 @@ class AbtractPaginatorTest extends TestCase
 
     /**
      * @dataProvider getTestGetFirstIndiceProvider
+     *
+     * @param \ArrayIterator<int|string, mixed> $iterator
      */
-    public function testGetFirstIndice($page, int $maxPerPage, \ArrayIterator $iterator, int $expectedResult): void
+    public function testGetFirstIndice(mixed $page, int $maxPerPage, \ArrayIterator $iterator, int $expectedResult): void
     {
         $paginator = $this->createPaginator($this->getDefaultOptions($page, $maxPerPage, $iterator));
 
@@ -205,8 +210,10 @@ class AbtractPaginatorTest extends TestCase
 
     /**
      * @dataProvider getTestGetLastIndiceProvider
+     *
+     * @param \ArrayIterator<int|string, mixed> $iterator
      */
-    public function testGetLastIndice($page, int $maxPerPage, \ArrayIterator $iterator, int $expectedResult): void
+    public function testGetLastIndice(mixed $page, int $maxPerPage, \ArrayIterator $iterator, int $expectedResult): void
     {
         $paginator = $this->createPaginator($this->getDefaultOptions($page, $maxPerPage, $iterator));
 
@@ -237,8 +244,10 @@ class AbtractPaginatorTest extends TestCase
 
     /**
      * @dataProvider getTestGetFirstPageProvider
+     *
+     * @param \ArrayIterator<int|string, mixed> $iterator
      */
-    public function testGetFirstPage($page, int $maxPerPage, \ArrayIterator $iterator, int $expectedResult): void
+    public function testGetFirstPage(mixed $page, int $maxPerPage, \ArrayIterator $iterator, int $expectedResult): void
     {
         $paginator = $this->createPaginator($this->getDefaultOptions($page, $maxPerPage, $iterator));
 
@@ -269,8 +278,10 @@ class AbtractPaginatorTest extends TestCase
 
     /**
      * @dataProvider getTestGetPreviousPageProvider
+     *
+     * @param \ArrayIterator<int|string, mixed> $iterator
      */
-    public function testGetPreviousPage($page, int $maxPerPage, \ArrayIterator $iterator, ?int $expectedResult): void
+    public function testGetPreviousPage(mixed $page, int $maxPerPage, \ArrayIterator $iterator, ?int $expectedResult): void
     {
         $paginator = $this->createPaginator($this->getDefaultOptions($page, $maxPerPage, $iterator));
 
@@ -301,8 +312,10 @@ class AbtractPaginatorTest extends TestCase
 
     /**
      * @dataProvider getTestGetPageProvider
+     *
+     * @param \ArrayIterator<int|string, mixed> $iterator
      */
-    public function testGetPage($page, int $maxPerPage, \ArrayIterator $iterator, int $expectedResult): void
+    public function testGetPage(mixed $page, int $maxPerPage, \ArrayIterator $iterator, int $expectedResult): void
     {
         $paginator = $this->createPaginator($this->getDefaultOptions($page, $maxPerPage, $iterator));
 
@@ -323,8 +336,10 @@ class AbtractPaginatorTest extends TestCase
 
     /**
      * @dataProvider getTestPageExistsProdiver
+     *
+     * @param \ArrayIterator<int|string, mixed> $iterator
      */
-    public function testPageExists($page, int $maxPerPage, \ArrayIterator $iterator, bool $expectedResult): void
+    public function testPageExists(mixed $page, int $maxPerPage, \ArrayIterator $iterator, bool $expectedResult): void
     {
         $paginator = $this->createPaginator($this->getDefaultOptions($page, $maxPerPage, $iterator));
 
@@ -345,8 +360,10 @@ class AbtractPaginatorTest extends TestCase
 
     /**
      * @dataProvider getTestGetNextPageProvider
+     *
+     * @param \ArrayIterator<int|string, mixed> $iterator
      */
-    public function testGetNextPage($page, int $maxPerPage, \ArrayIterator $iterator, ?int $expectedResult): void
+    public function testGetNextPage(mixed $page, int $maxPerPage, \ArrayIterator $iterator, ?int $expectedResult): void
     {
         $paginator = $this->createPaginator($this->getDefaultOptions($page, $maxPerPage, $iterator));
 
@@ -377,8 +394,10 @@ class AbtractPaginatorTest extends TestCase
 
     /**
      * @dataProvider getTestGetLastPageProvider
+     *
+     * @param \ArrayIterator<int|string, mixed> $iterator
      */
-    public function testGetLastPage($page, int $maxPerPage, \ArrayIterator $iterator, int $expectedResult): void
+    public function testGetLastPage(mixed $page, int $maxPerPage, \ArrayIterator $iterator, int $expectedResult): void
     {
         $paginator = $this->createPaginator($this->getDefaultOptions($page, $maxPerPage, $iterator));
 
@@ -409,8 +428,10 @@ class AbtractPaginatorTest extends TestCase
 
     /**
      * @dataProvider getTestIsFirstPageProvider
+     *
+     * @param \ArrayIterator<int|string, mixed> $iterator
      */
-    public function testIsFirstPage($page, int $maxPerPage, \ArrayIterator $iterator, bool $expectedResult): void
+    public function testIsFirstPage(mixed $page, int $maxPerPage, \ArrayIterator $iterator, bool $expectedResult): void
     {
         $paginator = $this->createPaginator($this->getDefaultOptions($page, $maxPerPage, $iterator));
 
@@ -441,8 +462,10 @@ class AbtractPaginatorTest extends TestCase
 
     /**
      * @dataProvider getTestIsLastPageProvider
+     *
+     * @param \ArrayIterator<int|string, mixed> $iterator
      */
-    public function testIsLastPage($page, int $maxPerPage, \ArrayIterator $iterator, bool $expectedResult): void
+    public function testIsLastPage(mixed $page, int $maxPerPage, \ArrayIterator $iterator, bool $expectedResult): void
     {
         $paginator = $this->createPaginator($this->getDefaultOptions($page, $maxPerPage, $iterator));
 
@@ -481,8 +504,10 @@ class AbtractPaginatorTest extends TestCase
 
     /**
      * @dataProvider getTestGetIteratorProvider
+     *
+     * @param \ArrayIterator<int|string, mixed> $iterator
      */
-    public function testGetIterator($page, int $maxPerPage, \ArrayIterator $iterator): void
+    public function testGetIterator(mixed $page, int $maxPerPage, \ArrayIterator $iterator): void
     {
         $paginator = $this->createPaginator($this->getDefaultOptions($page, $maxPerPage, $iterator));
 
@@ -503,8 +528,10 @@ class AbtractPaginatorTest extends TestCase
 
     /**
      * @dataProvider getTestGetIteratorProvider
+     *
+     * @param \ArrayIterator<int|string, mixed> $iterator
      */
-    public function testIterate($page, int $maxPerPage, \ArrayIterator $iterator): void
+    public function testIterate(mixed $page, int $maxPerPage, \ArrayIterator $iterator): void
     {
         $paginator = $this->createPaginator($this->getDefaultOptions($page, $maxPerPage, $iterator));
         $expectedCount = \count($iterator);
@@ -524,7 +551,12 @@ class AbtractPaginatorTest extends TestCase
         $this->assertTrue($paginator->isInitialized());
     }
 
-    protected function getDefaultOptions($page = 1, $perPage = 5, $iterator = null): array
+    /**
+     * @param \ArrayIterator<int|string, mixed> $iterator
+     *
+     * @return PaginatorOptions
+     */
+    protected function getDefaultOptions(mixed $page = 1, int $perPage = 5, ?\ArrayIterator $iterator = null): array
     {
         if (null === $iterator) {
             $iterator = $this->getDefaultIterator();
@@ -537,26 +569,17 @@ class AbtractPaginatorTest extends TestCase
         ];
     }
 
-    protected function createPaginator(array $options): AbstractPaginator
+    /**
+     * @param PaginatorOptions $options
+     */
+    protected function createPaginator(array $options): TestPaginator
     {
-        return new class($options) extends AbstractPaginator {
-            protected function buildCount(): int
-            {
-                return \count($this->getOption('iterator'));
-            }
-
-            protected function buildIterator(): \Traversable
-            {
-                return $this->getOption('iterator');
-            }
-
-            protected function configureOptions(OptionsResolver $resolver): void
-            {
-                $resolver->setRequired('iterator');
-            }
-        };
+        return new TestPaginator($options);
     }
 
+    /**
+     * @return AbstractPaginator<mixed, mixed, array<string ,mixed>, array<string ,mixed>>
+     */
     protected function createPaginatorMockWithoutConstructor(): AbstractPaginator
     {
         return $this->getMockBuilder(AbstractPaginator::class)
