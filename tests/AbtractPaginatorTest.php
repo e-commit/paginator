@@ -556,7 +556,7 @@ class AbtractPaginatorTest extends TestCase
      *
      * @return PaginatorOptions
      */
-    protected function getDefaultOptions(mixed $page = 1, int $perPage = 5, ?\ArrayIterator $iterator = null): array
+    protected function getDefaultOptions(mixed $page = 1, int $perPage = 5, \ArrayIterator $iterator = null): array
     {
         if (null === $iterator) {
             $iterator = $this->getDefaultIterator();
