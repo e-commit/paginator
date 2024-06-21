@@ -178,7 +178,7 @@ class ArrayPaginatorTest extends TestCase
      *
      * @return PaginatorOptions
      */
-    protected function getDefaultOptions(mixed $page = 1, int $perPage = 5, \ArrayIterator|array $data = null): array
+    protected function getDefaultOptions(mixed $page = 1, int $perPage = 5, \ArrayIterator|array|null $data = null): array
     {
         if (null === $data) {
             $data = $this->getDefaultArray();
