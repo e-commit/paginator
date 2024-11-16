@@ -8,5 +8,5 @@ parameters:
             path: tests/
         -
             message : '#Property Ecommit\\Paginator\\AbstractPaginator\<TKey,TValue,TOptions of array\<string, mixed\>,TResolvedOptions of array\<string, mixed\>\>\:\:\$options \(TResolvedOptions of array\<string, mixed\>\) does not accept array\<string, mixed#'
-            path: src/AbstractPaginator
+            path: src/AbstractPaginator.php
             count: 1

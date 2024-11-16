@@ -20,13 +20,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @phpstan-type PaginatorOptions array{
  *      page?: mixed,
  *      max_per_page?: int<1, max>,
- *      data: array|\ArrayIterator<int|string, mixed>,
+ *      data: array<array-key, mixed>|\ArrayIterator<array-key, mixed>,
  *      count?: int<0, max>|null
  * }
  * @phpstan-type PaginatorResolvedOptions array{
  *      page: int<0, max>,
  *      max_per_page: int<1, max>,
- *      data: array,
+ *      data: array<array-key, mixed>,
  *      count: int<0, max>|null
  * }
  *

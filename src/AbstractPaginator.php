@@ -122,7 +122,7 @@ abstract class AbstractPaginator implements PaginatorInterface
             return $this->options[$option];
         }
 
-        throw new \Exception(sprintf('Option "%s" not found', $option));
+        throw new \Exception(\sprintf('Option "%s" not found', $option));
     }
 
     /**
