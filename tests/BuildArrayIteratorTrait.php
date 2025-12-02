@@ -16,12 +16,12 @@ namespace Ecommit\Paginator\Tests;
 trait BuildArrayIteratorTrait
 {
     /** @var \ArrayIterator<int|string, mixed>|null */
-    protected ?\ArrayIterator $defaultIterator = null;
+    protected static ?\ArrayIterator $defaultIterator = null;
 
     /**
      * @return \ArrayIterator<int|string, mixed>
      */
-    protected function createIterator(array $data): \ArrayIterator
+    protected static function createIterator(array $data): \ArrayIterator
     {
         return new \ArrayIterator($data);
     }
@@ -29,12 +29,12 @@ trait BuildArrayIteratorTrait
     /**
      * @return \ArrayIterator<int|string, mixed>
      */
-    protected function getDefaultIterator(): \ArrayIterator
+    protected static function getDefaultIterator(): \ArrayIterator
     {
-        if (null === $this->defaultIterator) {
-            $this->defaultIterator = $this->createIterator(range(0, 51));
+        if (null === static::$defaultIterator) {
+            static::$defaultIterator = static::createIterator(range(0, 51));
         }
 
-        return $this->defaultIterator;
+        return static::$defaultIterator;
     }
 }

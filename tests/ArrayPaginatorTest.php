@@ -25,7 +25,7 @@ class ArrayPaginatorTest extends TestCase
 {
     use BuildArrayIteratorTrait;
 
-    protected ?array $defaultArray = null;
+    protected static ?array $defaultArray = null;
 
     public function testMissingDataOption(): void
     {
@@ -81,22 +81,22 @@ class ArrayPaginatorTest extends TestCase
         $this->assertCount($expectedValue, $paginator);
     }
 
-    public function getTestCountProvider(): array
+    public static function getTestCountProvider(): array
     {
         return [
-            [1, 5, $this->getDefaultArray(), 52],
-            [3, 5, $this->getDefaultArray(), 52],
-            [11, 5, $this->getDefaultArray(), 52],
+            [1, 5, static::getDefaultArray(), 52],
+            [3, 5, static::getDefaultArray(), 52],
+            [11, 5, static::getDefaultArray(), 52],
             [1, 5, [], 0], // No data
-            ['page', 5, $this->getDefaultArray(), 52], // Bad page
-            [1000, 5, $this->getDefaultArray(), 52], // Page too high
+            ['page', 5, static::getDefaultArray(), 52], // Bad page
+            [1000, 5, static::getDefaultArray(), 52], // Page too high
 
-            [1, 5, $this->getDefaultIterator(), 52],
-            [3, 5, $this->getDefaultIterator(), 52],
-            [11, 5, $this->getDefaultIterator(), 52],
-            [1, 5, $this->createIterator([]), 0], // No data
-            ['page', 5, $this->getDefaultIterator(), 52], // Bad page
-            [1000, 5, $this->getDefaultIterator(), 52], // Page too high
+            [1, 5, static::getDefaultIterator(), 52],
+            [3, 5, static::getDefaultIterator(), 52],
+            [11, 5, static::getDefaultIterator(), 52],
+            [1, 5, static::createIterator([]), 0], // No data
+            ['page', 5, static::getDefaultIterator(), 52], // Bad page
+            [1000, 5, static::getDefaultIterator(), 52], // Page too high
         ];
     }
 
@@ -115,22 +115,22 @@ class ArrayPaginatorTest extends TestCase
         $this->assertEquals($expectedValue, $paginator->getIterator());
     }
 
-    public function getTestGetIteratorProvider(): array
+    public static function getTestGetIteratorProvider(): array
     {
         return [
-            [1, 5, $this->getDefaultArray(), new \ArrayIterator([0, 1, 2, 3, 4])],
-            [3, 5, $this->getDefaultArray(), new \ArrayIterator([10, 11, 12, 13, 14])],
-            [11, 5, $this->getDefaultArray(), new \ArrayIterator([50, 51])],
+            [1, 5, static::getDefaultArray(), new \ArrayIterator([0, 1, 2, 3, 4])],
+            [3, 5, static::getDefaultArray(), new \ArrayIterator([10, 11, 12, 13, 14])],
+            [11, 5, static::getDefaultArray(), new \ArrayIterator([50, 51])],
             [1, 5, [], new \ArrayIterator()], // No data
-            ['page', 5, $this->getDefaultArray(), new \ArrayIterator([0, 1, 2, 3, 4])], // Bad page
-            [1000, 5, $this->getDefaultArray(), new \ArrayIterator([50, 51])], // Page too high
+            ['page', 5, static::getDefaultArray(), new \ArrayIterator([0, 1, 2, 3, 4])], // Bad page
+            [1000, 5, static::getDefaultArray(), new \ArrayIterator([50, 51])], // Page too high
 
-            [1, 5, $this->getDefaultIterator(), new \ArrayIterator([0, 1, 2, 3, 4])],
-            [3, 5, $this->getDefaultIterator(), new \ArrayIterator([10, 11, 12, 13, 14])],
-            [11, 5, $this->getDefaultIterator(), new \ArrayIterator([50, 51])],
-            [1, 5, $this->createIterator([]), new \ArrayIterator()], // No data
-            ['page', 5, $this->getDefaultIterator(), new \ArrayIterator([0, 1, 2, 3, 4])], // Bad page
-            [1000, 5, $this->getDefaultIterator(), new \ArrayIterator([50, 51])], // Page too high
+            [1, 5, static::getDefaultIterator(), new \ArrayIterator([0, 1, 2, 3, 4])],
+            [3, 5, static::getDefaultIterator(), new \ArrayIterator([10, 11, 12, 13, 14])],
+            [11, 5, static::getDefaultIterator(), new \ArrayIterator([50, 51])],
+            [1, 5, static::createIterator([]), new \ArrayIterator()], // No data
+            ['page', 5, static::getDefaultIterator(), new \ArrayIterator([0, 1, 2, 3, 4])], // Bad page
+            [1000, 5, static::getDefaultIterator(), new \ArrayIterator([50, 51])], // Page too high
         ];
     }
 
@@ -153,22 +153,22 @@ class ArrayPaginatorTest extends TestCase
         $this->assertEquals($expectedIterator, $paginator->getIterator());
     }
 
-    public function getTestCountWithCountProvider(): array
+    public static function getTestCountWithCountProvider(): array
     {
         return [
-            [1, 5, $this->getDefaultArray(), 202, 41, new \ArrayIterator(range(0, 51))],
-            [3, 5, $this->getDefaultArray(), 202, 41, new \ArrayIterator(range(0, 51))],
-            [11, 5, $this->getDefaultArray(), 202, 41, new \ArrayIterator(range(0, 51))],
+            [1, 5, static::getDefaultArray(), 202, 41, new \ArrayIterator(range(0, 51))],
+            [3, 5, static::getDefaultArray(), 202, 41, new \ArrayIterator(range(0, 51))],
+            [11, 5, static::getDefaultArray(), 202, 41, new \ArrayIterator(range(0, 51))],
             [1, 5, [], 0, 1, new \ArrayIterator()], // No data
-            ['page', 5, $this->getDefaultArray(), 202, 41, new \ArrayIterator(range(0, 51))], // Bad page
-            [1000, 5, $this->getDefaultArray(), 202, 41, new \ArrayIterator(range(0, 51))], // Page too high
+            ['page', 5, static::getDefaultArray(), 202, 41, new \ArrayIterator(range(0, 51))], // Bad page
+            [1000, 5, static::getDefaultArray(), 202, 41, new \ArrayIterator(range(0, 51))], // Page too high
 
-            [1, 5, $this->getDefaultIterator(), 202, 41, new \ArrayIterator(range(0, 51))],
-            [3, 5, $this->getDefaultIterator(), 202, 41, new \ArrayIterator(range(0, 51))],
-            [11, 5, $this->getDefaultIterator(), 202, 41, new \ArrayIterator(range(0, 51))],
-            [1, 5, $this->createIterator([]), 0, 1, new \ArrayIterator()], // No data
-            ['page', 5, $this->getDefaultIterator(), 202, 41, new \ArrayIterator(range(0, 51))], // Bad page
-            [1000, 5, $this->getDefaultIterator(), 202, 41, new \ArrayIterator(range(0, 51))], // Page too high
+            [1, 5, static::getDefaultIterator(), 202, 41, new \ArrayIterator(range(0, 51))],
+            [3, 5, static::getDefaultIterator(), 202, 41, new \ArrayIterator(range(0, 51))],
+            [11, 5, static::getDefaultIterator(), 202, 41, new \ArrayIterator(range(0, 51))],
+            [1, 5, static::createIterator([]), 0, 1, new \ArrayIterator()], // No data
+            ['page', 5, static::getDefaultIterator(), 202, 41, new \ArrayIterator(range(0, 51))], // Bad page
+            [1000, 5, static::getDefaultIterator(), 202, 41, new \ArrayIterator(range(0, 51))], // Page too high
         ];
     }
 
@@ -181,7 +181,7 @@ class ArrayPaginatorTest extends TestCase
     protected function getDefaultOptions(mixed $page = 1, int $perPage = 5, \ArrayIterator|array|null $data = null): array
     {
         if (null === $data) {
-            $data = $this->getDefaultArray();
+            $data = static::getDefaultArray();
         }
 
         return [
@@ -201,12 +201,12 @@ class ArrayPaginatorTest extends TestCase
         return new ArrayPaginator($options);
     }
 
-    protected function getDefaultArray(): array
+    protected static function getDefaultArray(): array
     {
-        if (null === $this->defaultArray) {
-            $this->defaultArray = range(0, 51);
+        if (null === static::$defaultArray) {
+            static::$defaultArray = range(0, 51);
         }
 
-        return $this->defaultArray;
+        return static::$defaultArray;
     }
 }

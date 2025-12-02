@@ -38,7 +38,7 @@ class AbtractPaginatorTest extends TestCase
         $this->assertFalse($paginator->pageExists());
     }
 
-    public function getTestBadPageOptionProvider(): array
+    public static function getTestBadPageOptionProvider(): array
     {
         return [
             ['string', 1],
@@ -71,7 +71,7 @@ class AbtractPaginatorTest extends TestCase
         $this->expectException(InvalidOptionsException::class);
         $this->expectExceptionMessage('"max_per_page"');
 
-        $options = $this->getDefaultOptions(1, -5, $this->getDefaultIterator());
+        $options = $this->getDefaultOptions(1, -5, static::getDefaultIterator());
         $this->createPaginator($options);
     }
 
@@ -127,7 +127,7 @@ class AbtractPaginatorTest extends TestCase
 
     public function testCountWithoutData(): void
     {
-        $options = $this->getDefaultOptions(1, 5, $this->createIterator([]));
+        $options = $this->getDefaultOptions(1, 5, static::createIterator([]));
         $paginator = $this->createPaginator($options);
         $this->assertSame(0, $paginator->count());
         $this->assertCount(0, $paginator);
@@ -158,7 +158,7 @@ class AbtractPaginatorTest extends TestCase
 
     public function testHaveToPaginateWithoutData(): void
     {
-        $options = $this->getDefaultOptions(1, 5, $this->createIterator([]));
+        $options = $this->getDefaultOptions(1, 5, static::createIterator([]));
         $paginator = $this->createPaginator($options);
 
         $this->assertFalse($paginator->haveToPaginate());
@@ -186,15 +186,15 @@ class AbtractPaginatorTest extends TestCase
         $this->assertSame($expectedResult, $paginator->getFirstIndice());
     }
 
-    public function getTestGetFirstIndiceProvider(): array
+    public static function getTestGetFirstIndiceProvider(): array
     {
         return [
-            [1, 5, $this->getDefaultIterator(), 1],
-            [3, 5, $this->getDefaultIterator(), 11],
-            [11, 5, $this->getDefaultIterator(), 51],
-            [1, 5, $this->createIterator([]), 0], // No data
-            ['page', 5, $this->getDefaultIterator(), 1], // Bad page
-            [1000, 5, $this->getDefaultIterator(), 51], // Page too high
+            [1, 5, static::getDefaultIterator(), 1],
+            [3, 5, static::getDefaultIterator(), 11],
+            [11, 5, static::getDefaultIterator(), 51],
+            [1, 5, static::createIterator([]), 0], // No data
+            ['page', 5, static::getDefaultIterator(), 1], // Bad page
+            [1000, 5, static::getDefaultIterator(), 51], // Page too high
         ];
     }
 
@@ -220,15 +220,15 @@ class AbtractPaginatorTest extends TestCase
         $this->assertSame($expectedResult, $paginator->getLastIndice());
     }
 
-    public function getTestGetLastIndiceProvider(): array
+    public static function getTestGetLastIndiceProvider(): array
     {
         return [
-            [1, 5, $this->getDefaultIterator(), 5],
-            [3, 5, $this->getDefaultIterator(), 15],
-            [11, 5, $this->getDefaultIterator(), 52],
-            [1, 5, $this->createIterator([]), 0], // No data
-            ['page', 5, $this->getDefaultIterator(), 5], // Bad page
-            [1000, 5, $this->getDefaultIterator(), 52], // Page too high
+            [1, 5, static::getDefaultIterator(), 5],
+            [3, 5, static::getDefaultIterator(), 15],
+            [11, 5, static::getDefaultIterator(), 52],
+            [1, 5, static::createIterator([]), 0], // No data
+            ['page', 5, static::getDefaultIterator(), 5], // Bad page
+            [1000, 5, static::getDefaultIterator(), 52], // Page too high
         ];
     }
 
@@ -254,15 +254,15 @@ class AbtractPaginatorTest extends TestCase
         $this->assertSame($expectedResult, $paginator->getFirstPage());
     }
 
-    public function getTestGetFirstPageProvider(): array
+    public static function getTestGetFirstPageProvider(): array
     {
         return [
-            [1, 5, $this->getDefaultIterator(), 1],
-            [3, 5, $this->getDefaultIterator(), 1],
-            [11, 5, $this->getDefaultIterator(), 1],
-            [1, 5, $this->createIterator([]), 1], // No data
-            ['page', 5, $this->getDefaultIterator(), 1], // Bad page
-            [1000, 5, $this->getDefaultIterator(), 1], // Page too high
+            [1, 5, static::getDefaultIterator(), 1],
+            [3, 5, static::getDefaultIterator(), 1],
+            [11, 5, static::getDefaultIterator(), 1],
+            [1, 5, static::createIterator([]), 1], // No data
+            ['page', 5, static::getDefaultIterator(), 1], // Bad page
+            [1000, 5, static::getDefaultIterator(), 1], // Page too high
         ];
     }
 
@@ -288,15 +288,15 @@ class AbtractPaginatorTest extends TestCase
         $this->assertSame($expectedResult, $paginator->getPreviousPage());
     }
 
-    public function getTestGetPreviousPageProvider(): array
+    public static function getTestGetPreviousPageProvider(): array
     {
         return [
-            [1, 5, $this->getDefaultIterator(), null],
-            [3, 5, $this->getDefaultIterator(), 2],
-            [11, 5, $this->getDefaultIterator(), 10],
-            [1, 5, $this->createIterator([]), null], // No data
-            ['page', 5, $this->getDefaultIterator(), null], // Bad page
-            [1000, 5, $this->getDefaultIterator(), 10], // Page too high
+            [1, 5, static::getDefaultIterator(), null],
+            [3, 5, static::getDefaultIterator(), 2],
+            [11, 5, static::getDefaultIterator(), 10],
+            [1, 5, static::createIterator([]), null], // No data
+            ['page', 5, static::getDefaultIterator(), null], // Bad page
+            [1000, 5, static::getDefaultIterator(), 10], // Page too high
         ];
     }
 
@@ -322,15 +322,15 @@ class AbtractPaginatorTest extends TestCase
         $this->assertSame($expectedResult, $paginator->getPage());
     }
 
-    public function getTestGetPageProvider(): array
+    public static function getTestGetPageProvider(): array
     {
         return [
-            [1, 5, $this->getDefaultIterator(), 1],
-            [3, 5, $this->getDefaultIterator(), 3],
-            [11, 5, $this->getDefaultIterator(), 11],
-            [1, 5, $this->createIterator([]), 1], // No data
-            ['page', 5, $this->getDefaultIterator(), 1], // Bad page
-            [1000, 5, $this->getDefaultIterator(), 11], // Page too high
+            [1, 5, static::getDefaultIterator(), 1],
+            [3, 5, static::getDefaultIterator(), 3],
+            [11, 5, static::getDefaultIterator(), 11],
+            [1, 5, static::createIterator([]), 1], // No data
+            ['page', 5, static::getDefaultIterator(), 1], // Bad page
+            [1000, 5, static::getDefaultIterator(), 11], // Page too high
         ];
     }
 
@@ -346,15 +346,15 @@ class AbtractPaginatorTest extends TestCase
         $this->assertSame($expectedResult, $paginator->pageExists());
     }
 
-    public function getTestPageExistsProdiver(): array
+    public static function getTestPageExistsProdiver(): array
     {
         return [
-            [1, 5, $this->getDefaultIterator(), true],
-            [3, 5, $this->getDefaultIterator(), true],
-            [11, 5, $this->getDefaultIterator(), true],
-            [1, 5, $this->createIterator([]), true], // No data
-            ['page', 5, $this->getDefaultIterator(), false], // Bad page
-            [1000, 5, $this->getDefaultIterator(), false], // Page too high
+            [1, 5, static::getDefaultIterator(), true],
+            [3, 5, static::getDefaultIterator(), true],
+            [11, 5, static::getDefaultIterator(), true],
+            [1, 5, static::createIterator([]), true], // No data
+            ['page', 5, static::getDefaultIterator(), false], // Bad page
+            [1000, 5, static::getDefaultIterator(), false], // Page too high
         ];
     }
 
@@ -370,15 +370,15 @@ class AbtractPaginatorTest extends TestCase
         $this->assertSame($expectedResult, $paginator->getNextPage());
     }
 
-    public function getTestGetNextPageProvider(): array
+    public static function getTestGetNextPageProvider(): array
     {
         return [
-            [1, 5, $this->getDefaultIterator(), 2],
-            [3, 5, $this->getDefaultIterator(), 4],
-            [11, 5, $this->getDefaultIterator(), null],
-            [1, 5, $this->createIterator([]), null], // No data
-            ['page', 5, $this->getDefaultIterator(), 2], // Bad page
-            [1000, 5, $this->getDefaultIterator(), null], // Page too high
+            [1, 5, static::getDefaultIterator(), 2],
+            [3, 5, static::getDefaultIterator(), 4],
+            [11, 5, static::getDefaultIterator(), null],
+            [1, 5, static::createIterator([]), null], // No data
+            ['page', 5, static::getDefaultIterator(), 2], // Bad page
+            [1000, 5, static::getDefaultIterator(), null], // Page too high
         ];
     }
 
@@ -404,15 +404,15 @@ class AbtractPaginatorTest extends TestCase
         $this->assertSame($expectedResult, $paginator->getLastPage());
     }
 
-    public function getTestGetLastPageProvider(): array
+    public static function getTestGetLastPageProvider(): array
     {
         return [
-            [1, 5, $this->getDefaultIterator(), 11],
-            [3, 5, $this->getDefaultIterator(), 11],
-            [11, 5, $this->getDefaultIterator(), 11],
-            [1, 5, $this->createIterator([]), 1], // No data
-            ['page', 5, $this->getDefaultIterator(), 11], // Bad page
-            [1000, 5, $this->getDefaultIterator(), 11], // Page too high
+            [1, 5, static::getDefaultIterator(), 11],
+            [3, 5, static::getDefaultIterator(), 11],
+            [11, 5, static::getDefaultIterator(), 11],
+            [1, 5, static::createIterator([]), 1], // No data
+            ['page', 5, static::getDefaultIterator(), 11], // Bad page
+            [1000, 5, static::getDefaultIterator(), 11], // Page too high
         ];
     }
 
@@ -438,15 +438,15 @@ class AbtractPaginatorTest extends TestCase
         $this->assertSame($expectedResult, $paginator->isFirstPage());
     }
 
-    public function getTestIsFirstPageProvider(): array
+    public static function getTestIsFirstPageProvider(): array
     {
         return [
-            [1, 5, $this->getDefaultIterator(), true],
-            [3, 5, $this->getDefaultIterator(), false],
-            [11, 5, $this->getDefaultIterator(), false],
-            [1, 5, $this->createIterator([]), true], // No data
-            ['page', 5, $this->getDefaultIterator(), true], // Bad page
-            [1000, 5, $this->getDefaultIterator(), false], // Page too high
+            [1, 5, static::getDefaultIterator(), true],
+            [3, 5, static::getDefaultIterator(), false],
+            [11, 5, static::getDefaultIterator(), false],
+            [1, 5, static::createIterator([]), true], // No data
+            ['page', 5, static::getDefaultIterator(), true], // Bad page
+            [1000, 5, static::getDefaultIterator(), false], // Page too high
         ];
     }
 
@@ -472,15 +472,15 @@ class AbtractPaginatorTest extends TestCase
         $this->assertSame($expectedResult, $paginator->isLastPage());
     }
 
-    public function getTestIsLastPageProvider(): array
+    public static function getTestIsLastPageProvider(): array
     {
         return [
-            [1, 5, $this->getDefaultIterator(), false],
-            [3, 5, $this->getDefaultIterator(), false],
-            [11, 5, $this->getDefaultIterator(), true],
-            [1, 5, $this->createIterator([]), true], // No data
-            ['page', 5, $this->getDefaultIterator(), false], // Bad page
-            [1000, 5, $this->getDefaultIterator(), true], // Page too high
+            [1, 5, static::getDefaultIterator(), false],
+            [3, 5, static::getDefaultIterator(), false],
+            [11, 5, static::getDefaultIterator(), true],
+            [1, 5, static::createIterator([]), true], // No data
+            ['page', 5, static::getDefaultIterator(), false], // Bad page
+            [1000, 5, static::getDefaultIterator(), true], // Page too high
         ];
     }
 
@@ -496,7 +496,7 @@ class AbtractPaginatorTest extends TestCase
 
     public function testGetMaxPerPage(): void
     {
-        $options = $this->getDefaultOptions(1, 88, $this->getDefaultIterator());
+        $options = $this->getDefaultOptions(1, 88, static::getDefaultIterator());
         $paginator = $this->createPaginator($options);
 
         $this->assertSame(88, $paginator->getMaxPerPage());
@@ -514,15 +514,15 @@ class AbtractPaginatorTest extends TestCase
         $this->assertSame($iterator, $paginator->getIterator());
     }
 
-    public function getTestGetIteratorProvider(): array
+    public static function getTestGetIteratorProvider(): array
     {
         return [
-            [1, 5, $this->getDefaultIterator()],
-            [3, 5, $this->getDefaultIterator()],
-            [11, 5, $this->getDefaultIterator()],
-            [1, 5, $this->createIterator([])], // No data
-            ['page', 5, $this->getDefaultIterator()], // Bad page
-            [1000, 5, $this->getDefaultIterator()], // Page too high
+            [1, 5, static::getDefaultIterator()],
+            [3, 5, static::getDefaultIterator()],
+            [11, 5, static::getDefaultIterator()],
+            [1, 5, static::createIterator([])], // No data
+            ['page', 5, static::getDefaultIterator()], // Bad page
+            [1000, 5, static::getDefaultIterator()], // Page too high
         ];
     }
 
@@ -559,7 +559,7 @@ class AbtractPaginatorTest extends TestCase
     protected function getDefaultOptions(mixed $page = 1, int $perPage = 5, ?\ArrayIterator $iterator = null): array
     {
         if (null === $iterator) {
-            $iterator = $this->getDefaultIterator();
+            $iterator = static::getDefaultIterator();
         }
 
         return [
